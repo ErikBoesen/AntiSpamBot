@@ -1,0 +1,16 @@
+service: antispambot
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+functions:
+  receive:
+    handler: handler.receive
+    events:
+      - http:
+          path: receive
+          method: post
+
+plugins:
+  - serverless-python-requirements
