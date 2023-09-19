@@ -21,7 +21,6 @@ FLAGGED_PHRASES = (
 
 def get_memberships(group_id, token):
     response = requests.get(f'{API_ROOT}groups/{group_id}', params={'token': token}).json()['response']['members']
-    print('Got response: ' + str(response))
     return response
 
 
