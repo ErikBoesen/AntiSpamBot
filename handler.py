@@ -13,6 +13,7 @@ FLAGGED_PHRASES = (
     'paper writing service',
     'academic writing service',
     'student paper assignments',
+    'getting professional academic help from us is easy',
     'cutt.us',
     'inyurl.com/muxz7h',
 )
@@ -33,6 +34,8 @@ def get_membership_id(group_id, user_id, token):
 
 def remove_member(group_id, membership_id, token):
     response = requests.post(f'{API_ROOT}groups/{group_id}/members/{membership_id}/remove', params={'token': token})
+    print('Tried to kick user, got response:')
+    print(response.text)
     return response.ok
 
 
@@ -49,6 +52,7 @@ def receive(event, context):
         if phrase in message['text'].lower():
             kick_user(message['group_id'], message['user_id'], message['token'])
             send('Kicked ' + message['name'] + ' due to apparent spam post.', bot_id)
+            break
 
     return {
         'statusCode': 200,
