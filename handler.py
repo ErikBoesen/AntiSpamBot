@@ -38,6 +38,11 @@ def remove_member(group_id, membership_id, token):
     return response.ok
 
 
+def delete_message(group_id, message_id, token):
+    response = requests.delete(f'{API_ROOT}conversations/{group_id}/messages/{message_id}', params={'token': token})
+    return response.ok
+
+
 def kick_user(group_id, user_id, token):
     membership_id = get_membership_id(group_id, user_id, token)
     remove_member(group_id, membership_id, token)
@@ -50,6 +55,7 @@ def receive(event, context):
     for phrase in FLAGGED_PHRASES:
         if phrase in message['text'].lower():
             kick_user(message['group_id'], message['user_id'], message['token'])
+            delete_message(message['group_id'], message['id'], message['token'])
             send('Kicked ' + message['name'] + ' due to apparent spam post.', bot_id)
             break
 
