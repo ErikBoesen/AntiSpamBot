@@ -16,6 +16,9 @@ FLAGGED_PHRASES = (
     'getting professional academic help from us is easy',
     'cutt.us',
     'inyurl.com/muxz7h',
+    'u.to/xavt',
+    'we write your papers',
+    'best in the writing service industry',
 )
 
 
