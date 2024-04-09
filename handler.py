@@ -16,6 +16,11 @@ FLAGGED_PHRASES = (
     'getting professional academic help from us is easy',
     'cutt.us',
     'inyurl.com/muxz7h',
+    'to cancer about a week ago',
+    'play station 5',
+    'ps5',
+    'ticket',
+    'tickets'
 )
 
 
