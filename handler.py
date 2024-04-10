@@ -22,6 +22,11 @@ FLAGGED_PHRASES = (
     'side job offer for you which',
     'getting $1000 within week',
     'lost my daughter to cancer about a week ago,she was',
+    'to cancer about a week ago',
+    'play station 5',
+    'ps5',
+    'ticket',
+    'tickets',
 )
 
 
