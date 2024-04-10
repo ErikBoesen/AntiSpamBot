@@ -27,6 +27,10 @@ FLAGGED_PHRASES = (
     'ps5',
     'ticket',
     'tickets',
+    'essay writer',
+    'super writer',
+    'cute writer',
+    'hentai',
 )
 
 
