@@ -37,14 +37,12 @@ FLAGGED_PHRASES = (
 def get_memberships(group_id, token):
     response = requests.get(f'{API_ROOT}groups/{group_id}', params={'token': token}).json()['response']['members']
     return response
-
-
-def get_membership_id(group_id, user_id, token):
+            
+def get_membership_id_and_admin_status(group_id, user_id, token):
     memberships = get_memberships(group_id, token)
     for membership in memberships:
         if membership['user_id'] == user_id:
-            return membership['id']
-
+            return membership['id'], membership.get('admin', False)
 
 def remove_member(group_id, membership_id, token):
     response = requests.post(f'{API_ROOT}groups/{group_id}/members/{membership_id}/remove', params={'token': token})
@@ -59,8 +57,9 @@ def delete_message(group_id, message_id, token):
 
 
 def kick_user(group_id, user_id, token):
-    membership_id = get_membership_id(group_id, user_id, token)
+    membership_id, _ = get_membership_id_and_admin_status(group_id, user_id, token)
     remove_member(group_id, membership_id, token)
+
 
 
 def receive(event, context):
@@ -69,15 +68,19 @@ def receive(event, context):
     bot_id = message['bot_id']
     for phrase in FLAGGED_PHRASES:
         if phrase in message['text'].lower():
-            kick_user(message['group_id'], message['user_id'], message['token'])
-            delete_message(message['group_id'], message['id'], message['token'])
-            send('Kicked ' + message['name'] + ' due to apparent spam post.', bot_id)
+            membership_id, is_admin = get_membership_id_and_admin_status(message['group_id'], message['user_id'], message['token'])
+            # Proceed with actions only if the user is not an admin
+            if not is_admin:
+                kick_user(message['group_id'], message['user_id'], message['token'])
+                delete_message(message['group_id'], message['id'], message['token'])
+                send('Kicked ' + message['name'] + ' due to apparent spam post.', bot_id)
             break
 
     return {
         'statusCode': 200,
         'body': 'ok'
     }
+
 
 
 def send(text, bot_id):
