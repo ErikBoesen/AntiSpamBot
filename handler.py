@@ -37,7 +37,7 @@ FLAGGED_PHRASES = (
 def get_memberships(group_id, token):
     response = requests.get(f'{API_ROOT}groups/{group_id}', params={'token': token}).json()['response']['members']
     return response
-            
+
 def get_membership_id(group_id, user_id, token):
     memberships = get_memberships(group_id, token)
     for membership in memberships:
@@ -69,7 +69,7 @@ def kick_user(group_id, user_id, token):
 def receive(event, context):
     message = json.loads(event['body'])
     bot_id = message['bot_id']
-    
+
     for phrase in FLAGGED_PHRASES:
         if phrase in message['text'].lower():
             # Attempt to kick the user and check if it was successful
@@ -77,7 +77,7 @@ def receive(event, context):
                 delete_message(message['group_id'], message['id'], message['token'])
                 send('Kicked ' + message['name'] + ' due to apparent spam post.', bot_id)
             else:
-                print("Kick attempt failed or user is an admin.")
+                print('Kick attempt failed or user is an admin.')
             break
 
     return {
